@@ -3,22 +3,78 @@
 #include <stdio.h>
 #include <string.h>
 
+void swap(int *a, int *b)
+{
+	int temp =*a;
+	*a=*b;
+	*b=temp;
+}
+
 int extraMemoryAllocated=0;
 
 typedef struct node{
 	int data;
-	*node left;
-	*node right;
+	node *left;
+	node *right;
 }node;
 
 void heapify(node *head)
 {
-
+    if(head == NULL)
+	{ 
+		return;
+	}
+    node *smallest=head;
+    node *l=head->left;
+    node *r=head->right;
+    
+    if(l!=NULL&&l->data<smallest->data) 
+	{
+        smallest=l;
+    }
+    if (r!=NULL&&r->data<smallest->data) 
+	{
+        smallest=r;
+    }
+    if (smallest != head) {
+        int temp=head->data;
+        head->data=smallest->data;
+        smallest->data=temp;
+        heapify(smallest);
+    }
+}
+void buildTree(node *head, int *arr, int i, int n)
+{
+	if (i>=n)
+	{
+		return;
+	}
+    
+    head->data = arr[i];
+    
+    node *left = malloc(sizeof(node));
+    node *right = malloc(sizeof(node));
+    
+    head->left = left;
+    head->right = right;
+    
+    buildTree(left, arr, 2*i+1, n);
+    buildTree(right, arr, 2*i+2, n);
 }
 
 void heapSort(int arr[], int n)
 {
-	
+	node *root = malloc(sizeof(node));
+    buildTree(root, arr, 0, n);
+    
+    for (int i=n-1;i>=0;i--) 
+	{
+        int temp=root->data;
+        root->data=arr[i];
+        arr[i]=temp;
+        
+        heapify(root);
+    }
 }
 
 void mergeList(int *pData, int l, int m, int r) {
