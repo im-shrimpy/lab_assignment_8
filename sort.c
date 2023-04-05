@@ -1,20 +1,84 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-int extraMemoryAllocated;
+int extraMemoryAllocated=0;
 
-// implements heap sort
-// extraMemoryAllocated counts bytes of memory allocated
-void heapSort(int arr[], int n)
+typedef struct node{
+	int data;
+	*node left;
+	*node right;
+}node;
+
+void heapify(node *head)
 {
+
 }
 
-
-// implement merge sort
-// extraMemoryAllocated counts bytes of extra memory allocated
-void mergeSort(int pData[], int l, int r)
+void heapSort(int arr[], int n)
 {
+	
+}
+
+void mergeList(int *pData, int l, int m, int r) {
+    int i, j, k;
+    int n1=m-l+1;
+    int n2=r-m;
+
+    int *L=malloc(n1*sizeof(int));
+    if (L!=NULL) {
+        extraMemoryAllocated+=n1*sizeof(int);
+    }
+    int *R=(int*)malloc(n2*sizeof(int));
+    if (R!= NULL){
+        extraMemoryAllocated += n2*sizeof(int);
+    }
+
+    for (i = 0; i < n1; i++)
+	{
+		L[i] = pData[l + i];
+	}
+    for (j = 0; j < n2; j++)
+	{
+        R[j] = pData[m + 1 + j];
+	}
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            pData[k] = L[i];
+            i++;
+        }
+        else {
+            pData[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < n1) {
+        pData[k] = L[i];
+        i++;
+        k++;
+    }
+    while (j < n2) {
+        pData[k] = R[j];
+        j++;
+        k++;
+    }
+
+    free(L);
+    free(R);
+}
+
+void mergeSort(int *pData, int l, int r){
+    if (l<r){
+        int m=l+(r-l)/2;
+        mergeSort(pData,l,m);
+        mergeSort(pData,m+1,r);
+        mergeList(pData,l,m,r);
+    }
 }
 
 // parses input file to an integer array
