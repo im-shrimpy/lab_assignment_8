@@ -18,7 +18,7 @@ struct node
 	int data;
 	struct node *left;
 	struct node *right;
-} 
+};
 
 void heapify(struct node *head)
 {
@@ -30,11 +30,11 @@ void heapify(struct node *head)
     struct node *l=head->left;
     struct node *r=head->right;
     
-    if(l!=NULL&&l->data<smallest->data) 
+    if((l!=NULL)&&(l->data<smallest->data)) 
 	{
         smallest=l;
     }
-    if (r!=NULL&&r->data<smallest->data) 
+    if ((r!=NULL)&&(r->data<smallest->data)) 
 	{
         smallest=r;
     }
@@ -50,6 +50,8 @@ void buildTree(struct node *head, int *arr, int i, int n)
 {
 	if (i>=n)
 	{
+		head->left=NULL;
+		head->right=NULL;
 		return;
 	}
     
@@ -57,7 +59,8 @@ void buildTree(struct node *head, int *arr, int i, int n)
     
     struct node *left = malloc(sizeof(struct node));
     struct node *right = malloc(sizeof(struct node));
-    
+    extraMemoryAllocated+=sizeof(struct node)*2;
+
     head->left = left;
     head->right = right;
     
@@ -68,6 +71,7 @@ void buildTree(struct node *head, int *arr, int i, int n)
 void heapSort(int arr[], int n)
 {
 	struct node *root = malloc(sizeof(struct node));
+	extraMemoryAllocated+=sizeof(struct node);
     buildTree(root, arr, 0, n);
     
     for (int i=n-1;i>=0;i--) 
@@ -86,13 +90,9 @@ void mergeList(int *pData, int l, int m, int r) {
     int n2=r-m;
 
     int *L=malloc(n1*sizeof(int));
-    if (L!=NULL) {
-        extraMemoryAllocated+=n1*sizeof(int);
-    }
-    int *R=(int*)malloc(n2*sizeof(int));
-    if (R!= NULL){
-        extraMemoryAllocated += n2*sizeof(int);
-    }
+    extraMemoryAllocated+=n1*sizeof(int);
+    int *R=malloc(n2*sizeof(int));
+    extraMemoryAllocated += n2*sizeof(int);
 
     for (i = 0; i < n1; i++)
 	{
