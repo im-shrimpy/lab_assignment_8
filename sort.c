@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+int extraMemoryAllocated;
 
 void swap(int *a, int *b)
 {
@@ -10,23 +11,24 @@ void swap(int *a, int *b)
 	*b=temp;
 }
 
-int extraMemoryAllocated=0;
 
-typedef struct node{
+
+struct node
+{
 	int data;
-	node *left;
-	node *right;
-}node;
+	struct node *left;
+	struct node *right;
+} 
 
-void heapify(node *head)
+void heapify(struct node *head)
 {
     if(head == NULL)
 	{ 
 		return;
 	}
-    node *smallest=head;
-    node *l=head->left;
-    node *r=head->right;
+    struct node *smallest=head;
+    struct node *l=head->left;
+    struct node *r=head->right;
     
     if(l!=NULL&&l->data<smallest->data) 
 	{
@@ -43,7 +45,8 @@ void heapify(node *head)
         heapify(smallest);
     }
 }
-void buildTree(node *head, int *arr, int i, int n)
+
+void buildTree(struct node *head, int *arr, int i, int n)
 {
 	if (i>=n)
 	{
@@ -52,8 +55,8 @@ void buildTree(node *head, int *arr, int i, int n)
     
     head->data = arr[i];
     
-    node *left = malloc(sizeof(node));
-    node *right = malloc(sizeof(node));
+    struct node *left = malloc(sizeof(struct node));
+    struct node *right = malloc(sizeof(struct node));
     
     head->left = left;
     head->right = right;
@@ -64,7 +67,7 @@ void buildTree(node *head, int *arr, int i, int n)
 
 void heapSort(int arr[], int n)
 {
-	node *root = malloc(sizeof(node));
+	struct node *root = malloc(sizeof(struct node));
     buildTree(root, arr, 0, n);
     
     for (int i=n-1;i>=0;i--) 
