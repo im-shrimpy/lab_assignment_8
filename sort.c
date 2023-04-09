@@ -11,7 +11,18 @@ void swap(int *a, int *b)
 	*b=temp;
 }
 
-
+void freeNodes(node *head)
+{
+	if(head->left!=NULL)
+	{
+		freeNodes(head->left);
+	}
+	if(head->right!=NULL)
+	{
+		freeNodes(head->right);
+	}
+	free(head);
+}
 
 struct node
 {
@@ -82,6 +93,7 @@ void heapSort(int arr[], int n)
         
         heapify(root);
     }
+	freeNodes(root);
 }
 
 void mergeList(int *pData, int l, int m, int r) {
